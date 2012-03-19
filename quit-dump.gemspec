@@ -4,7 +4,6 @@ Gem::Specification.new do |s|
   s.summary = "Install QUIT signal thread dumper"
   s.files = Dir['lib/**/*.rb']
   s.require_path = 'lib'
-  s.autorequire = 'quit-dump'
   s.has_rdoc = false
   s.author = "Brendon McLean"
   s.email = "brendon@twistedprotein.com"
