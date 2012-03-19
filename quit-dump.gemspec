@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'quit-dump'
-  s.version = '0.1'
+  s.version = '0.2'
   s.summary = "Install QUIT signal thread dumper"
   s.files = Dir['lib/**/*.rb']
   s.require_path = 'lib'
