@@ -4,7 +4,7 @@
 #
 # Trigger it with: kill -QUIT <pid>
 #
-trap "QUIT" do
+trap "INT" do
   if Kernel.respond_to? :caller_for_all_threads
     STDERR.puts "\n=============== Thread Dump ==============="
     caller_for_all_threads.each_pair do |thread, stack|
