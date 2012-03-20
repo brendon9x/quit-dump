@@ -2,9 +2,9 @@
 #
 # Install a signal handler to dump backtraces for all threads
 #
-# Trigger it with: kill -QUIT <pid>
+# Trigger it with: kill -HUP <pid>
 #
-trap "QUIT" do
+trap "HUP" do
   if Kernel.respond_to? :caller_for_all_threads
     STDERR.puts "\n=============== Thread Dump ==============="
     caller_for_all_threads.each_pair do |thread, stack|
