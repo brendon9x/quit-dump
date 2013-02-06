@@ -2,7 +2,7 @@ require 'base64'
 
 Gem::Specification.new do |s|
   s.name = 'quit-dump'
-  s.version = '1.0'
+  s.version = '1.9'
   s.summary = "Install INT signal thread dumper"
   s.files = Dir['lib/**/*.rb']
   s.require_paths = ['lib']
