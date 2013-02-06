@@ -24,10 +24,10 @@ end
 trap "HUP" do
   if Kernel.respond_to? :caller_for_all_threads
     STDERR.puts "\n=============== Thread Dump ==============="
-    thread_dumper[caller_for_all_threads]
+    caller_for_all_threads.each { |(thread, stack)| thread_dumper[thread, stack]}
   elsif Thread.respond_to? :list
     STDERR.puts "\n=============== Thread Dump ==============="
-    thread_dumper[Thread.list.map { |t| [t, t.backtrace] }]
+    Thread.list.each { |t| thread_dumper[t, t.backtrace] }
   else
     STDERR.puts "=============== Current Thread Backtrace ==============="
     STDERR.puts "Current thread : #{Thread.inspect}"
