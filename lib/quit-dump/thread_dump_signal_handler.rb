@@ -4,25 +4,30 @@
 #
 # Trigger it with: kill -HUP <pid>
 #
+thread_dumper = lambda do |thread, stack|
+  thread_description = thread.inspect
+  thread_description << " [main]" if thread == Thread.main
+  thread_description << " [current]" if thread == Thread.current
+  thread_description << " alive=#{thread.alive?}"
+  thread_description << " priority=#{thread.priority}"
+  thread_separator = "-" * 78
+
+  full_description = "\n#{thread_separator}\n"
+  full_description << thread_description
+  full_description << "\n#{thread_separator}\n"
+  full_description << "    #{stack.join("\n      \\_ ")}\n"
+
+  # Single puts to avoid interleaved output
+  STDERR.puts full_description
+end
+
 trap "HUP" do
   if Kernel.respond_to? :caller_for_all_threads
     STDERR.puts "\n=============== Thread Dump ==============="
-    caller_for_all_threads.each_pair do |thread, stack|
-      thread_description = thread.inspect
-      thread_description << " [main]" if thread == Thread.main
-      thread_description << " [current]" if thread == Thread.current
-      thread_description << " alive=#{thread.alive?}"
-      thread_description << " priority=#{thread.priority}"
-      thread_separator = "-" * 78
-
-      full_description = "\n#{thread_separator}\n"
-      full_description << thread_description
-      full_description << "\n#{thread_separator}\n"
-      full_description << "    #{stack.join("\n      \\_ ")}\n"
-
-      # Single puts to avoid interleaved output
-      STDERR.puts full_description
-    end
+    thread_dumper[caller_for_all_threads]
+  elsif Thread.respond_to? :list
+    STDERR.puts "\n=============== Thread Dump ==============="
+    thread_dumper[Thread.list.map { |t| [t, t.backtrace] }]
   else
     STDERR.puts "=============== Current Thread Backtrace ==============="
     STDERR.puts "Current thread : #{Thread.inspect}"
